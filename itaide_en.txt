@@ -1,0 +1,52 @@
+# Ita IDE Plug-in for RAD Studio
+
+## What's this?
+
+This plug-in displays the image in the editor background.
+Supported version: XE2 - 10.1 Berlin
+
+## Installation
+
+1. Open the package "src\itaide.dpk"
+2. Right click on "itaide.bpl" and click "Install"
+
+## Change the image
+
+Go to "Tools -> Ita IDE Options"
+Supported file formats: Bitmap, JPEG, PNG
+
+Default image is [Pronama-Chan](http://pronama.azurewebsites.net/pronama/).
+
+## License
+
+Ita IDE Plug-in is licensed under the terms of the zlib license.
+Copyright (c) 2014-2016 Lyna
+
+## History
+
+### Ver.0.0.12
+
+- Add support for 10.1 Berlin
+
+### Ver.0.0.11
+
+- Add support for 10 Seattle
+
+### Ver.0.0.10
+
+- Fix crash bug
+
+### Ver.0.0.9
+
+- Change to use FMX TBitmap at startup
+
+### Ver.0.0.8
+
+- Add align option
+- Add scaling option
+
+### Ver.0.0.7
+
+- Add support for XE8
+- Move default.png to resource
+- Fix flickering bug
