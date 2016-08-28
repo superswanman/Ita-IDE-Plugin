@@ -1,0 +1,18 @@
+{
+    "source_folders":
+    [
+        {
+            "folder": "src",
+            "base": "",
+            "recursive": false,
+            "filter": "*;*.*"
+        }
+    ],
+    "projects":
+    [
+        {
+            "project": "src\\itaide.dproj",
+            "compiler_min": 27
+        }
+    ]
+}
