@@ -1,7 +1,7 @@
 ﻿(*
   Ita IDE Plugin
 
-  Copyright (c) 2014-2016 Lyna
+  Copyright (c) 2014-2017 Lyna
 
   This software is provided 'as-is', without any express or implied
   warranty. In no event will the authors be held liable for any damages
@@ -98,6 +98,7 @@ const
     {$IFDEF VER290}'coreide220.bpl'{$ENDIF} // XE8
     {$IFDEF VER300}'coreide230.bpl'{$ENDIF} // 10 Seattle
     {$IFDEF VER310}'coreide240.bpl'{$ENDIF} // 10.1 Berlin
+    {$IFDEF VER320}'coreide250.bpl'{$ENDIF} // 10.2 Tokyo
     ;
 
   HighlightRegKey =
@@ -110,6 +111,7 @@ const
     {$IFDEF VER290}'\Software\Embarcadero\BDS\16.0\Editor\Highlight\'{$ENDIF} // XE8
     {$IFDEF VER300}'\Software\Embarcadero\BDS\17.0\Editor\Highlight\'{$ENDIF} // 10 Seattle
     {$IFDEF VER310}'\Software\Embarcadero\BDS\18.0\Editor\Highlight\'{$ENDIF} // 10.1 Berlin
+    {$IFDEF VER320}'\Software\Embarcadero\BDS\19.0\Editor\Highlight\'{$ENDIF} // 10.2 Tokyo
     ;
   HighlightRegName = 'Background Color New';
 

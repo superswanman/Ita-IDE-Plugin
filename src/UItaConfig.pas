@@ -1,7 +1,7 @@
 ﻿(*
   Ita IDE Plugin
 
-  Copyright (c) 2014-2016 Lyna
+  Copyright (c) 2014-2017 Lyna
 
   This software is provided 'as-is', without any express or implied
   warranty. In no event will the authors be held liable for any damages
