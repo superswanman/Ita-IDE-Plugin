@@ -3,7 +3,7 @@
 ## What's this?
 
 This plug-in displays the image in the editor background.
-Supported version: XE2 - 10.3 Rio
+Supported version: XE2 - 10.4 Sidney
 
 ## Installation
 
@@ -20,9 +20,13 @@ Default image is [Pronama-Chan](http://pronama.azurewebsites.net/pronama/).
 ## License
 
 Ita IDE Plug-in is licensed under the terms of the zlib license.
-Copyright (c) 2014-2018 Lyna
+Copyright (c) 2014-2020 Lyna
 
 ## History
+
+### Ver.0.0.15
+
+- Add support for 10.4 Sydney
 
 ### Ver.0.0.14
 

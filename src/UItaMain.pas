@@ -1,7 +1,7 @@
 ﻿(*
   Ita IDE Plugin
 
-  Copyright (c) 2014-2018 Lyna
+  Copyright (c) 2014-2020 Lyna
 
   This software is provided 'as-is', without any express or implied
   warranty. In no event will the authors be held liable for any damages
@@ -76,7 +76,7 @@ const
   sEVScrollRect = '@Editorcontrol@TCustomEditControl@EVScrollRect$qqrp18System@Types@TRectt1ii';
   sEditControlList = '@Editorcontrol@EditControlList';
 
-{$IFDEF VER330}
+{$IF DEFINED(VER330) OR DEFINED(VER340)}
   EVFillRectCodes: array[0..4] of Byte = (
     $53,          // PUSH EBX
     $51,          // PUSH ECX
@@ -108,6 +108,7 @@ const
     {$IFDEF VER310}'coreide240.bpl'{$ENDIF} // 10.1 Berlin
     {$IFDEF VER320}'coreide250.bpl'{$ENDIF} // 10.2 Tokyo
     {$IFDEF VER330}'coreide260.bpl'{$ENDIF} // 10.3 Rio
+    {$IFDEF VER340}'coreide270.bpl'{$ENDIF} // 10.4 Sydney
     ;
 
   HighlightRegKey =
@@ -122,6 +123,7 @@ const
     {$IFDEF VER310}'\Software\Embarcadero\BDS\18.0\Editor\Highlight\'{$ENDIF} // 10.1 Berlin
     {$IFDEF VER320}'\Software\Embarcadero\BDS\19.0\Editor\Highlight\'{$ENDIF} // 10.2 Tokyo
     {$IFDEF VER330}'\Software\Embarcadero\BDS\20.0\Editor\Highlight\'{$ENDIF} // 10.3 Rio
+    {$IFDEF VER340}'\Software\Embarcadero\BDS\21.0\Editor\Highlight\'{$ENDIF} // 10.4 Sydney
     ;
   HighlightRegName = 'Background Color New';
 

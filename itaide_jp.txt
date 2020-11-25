@@ -2,7 +2,7 @@
 
 ## これは何？
 
-IDEのエディタ背景に画像を表示します。XE2から10.3 Rioに対応しています。
+IDEのエディタ背景に画像を表示します。XE2から10.4 Sydneyに対応しています。
 これ(↓)に似ているという噂もありますが、パクリという名のオマージュです。  
 http://visualstudiogallery.msdn.microsoft.com/0e6f9037-b753-469e-86d4-bfba78c74cf6/
 
@@ -24,6 +24,10 @@ IDEでitaide.dpkを開き、通常のパッケージと同じようにインストールして下さい。
 デフォルトの画像は[プロ生ちゃん](http://pronama.azurewebsites.net/pronama/)(&copy; 2011 プログラミング生放送)をお借りしてます。
 
 ## 更新履歴
+
+### Ver.0.0.14 (2020/11/25)
+
+- RAD Studio 10.4 Sydneyに対応
 
 ### Ver.0.0.14 (2018/11/23)
 
