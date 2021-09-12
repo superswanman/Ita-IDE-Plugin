@@ -76,7 +76,7 @@ const
   sEVScrollRect = '@Editorcontrol@TCustomEditControl@EVScrollRect$qqrp18System@Types@TRectt1ii';
   sEditControlList = '@Editorcontrol@EditControlList';
 
-{$IF DEFINED(VER330) OR DEFINED(VER340)}
+{$IF CompilerVersion >= 33.0}
   EVFillRectCodes: array[0..4] of Byte = (
     $53,          // PUSH EBX
     $51,          // PUSH ECX
@@ -109,6 +109,7 @@ const
     {$IFDEF VER320}'coreide250.bpl'{$ENDIF} // 10.2 Tokyo
     {$IFDEF VER330}'coreide260.bpl'{$ENDIF} // 10.3 Rio
     {$IFDEF VER340}'coreide270.bpl'{$ENDIF} // 10.4 Sydney
+    {$IFDEF VER350}'coreide280.bpl'{$ENDIF} // 11 Alexandria
     ;
 
   HighlightRegKey =
@@ -124,6 +125,7 @@ const
     {$IFDEF VER320}'\Software\Embarcadero\BDS\19.0\Editor\Highlight\'{$ENDIF} // 10.2 Tokyo
     {$IFDEF VER330}'\Software\Embarcadero\BDS\20.0\Editor\Highlight\'{$ENDIF} // 10.3 Rio
     {$IFDEF VER340}'\Software\Embarcadero\BDS\21.0\Editor\Highlight\'{$ENDIF} // 10.4 Sydney
+    {$IFDEF VER350}'\Software\Embarcadero\BDS\22.0\Editor\Highlight\'{$ENDIF} // 11 Alexandria
     ;
   HighlightRegName = 'Background Color New';
 
