@@ -1,4 +1,4 @@
-﻿(*
+(*
   Ita IDE Plugin
 
   Copyright (c) 2014-2020 Lyna
@@ -22,6 +22,7 @@
     3. This notice may not be removed or altered from any source
     distribution.
 *)
+
 unit UItaMain;
 
 {$IF CompilerVersion >= 30.00}
@@ -35,7 +36,8 @@ uses
   System.IniFiles, System.Win.Registry, System.Rtti, System.TypInfo,
   System.Types, System.UITypes, FMX.Types, FMX.Surfaces,
   {$IF FireMonkeyVersion >= 19.0}FMX.Graphics,{$IFEND}
-  Vcl.Controls, Vcl.Graphics, Vcl.Menus, ToolsAPI, UItaConfig;
+  Vcl.Controls, Vcl.Graphics, Vcl.Menus, ToolsAPI, UItaConfig
+  ;
 
 procedure LoadBackgroundImage;
 procedure SaveSettings;
@@ -71,31 +73,67 @@ var
 
 implementation
 
+type T5Bytes = array[0..5] of byte;
 const
-  sEVFillRect = '@Editorcontrol@TCustomEditControl@EVFillRect$qqrrx18System@Types@TRect';
+  sEVFillRectList: array[0..1] of string = (
+    '@Editorcontrol@TCustomEditControl@EVFillRect$qqrrx18System@Types@TRect',
+    '@Editorcontrol@TCustomEditControl@EVFillRect$qqrrx18System@Types@TRectx69System@%DelphiInterface$42Toolsapi@Editor@INTACodeEditorPaintContext%');
+
   sEVScrollRect = '@Editorcontrol@TCustomEditControl@EVScrollRect$qqrp18System@Types@TRectt1ii';
   sEditControlList = '@Editorcontrol@EditControlList';
 
-{$IF CompilerVersion >= 33.0}
-  EVFillRectCodes: array[0..4] of Byte = (
-    $53,          // PUSH EBX
-    $51,          // PUSH ECX
-    $89, $14, $24 // MOV DWORD PTR SS:[ESP],EDX
-  );
-{$ELSE}
-  EVFillRectCodes: array[0..5] of Byte = (
-    $53,      // PUSH EBX
-    $56,      // PUSH ESI
-    $8B, $F2, // MOV ESI,EDX
-    $8B, $D8  // MOV EBX,EAX
-  );
-{$ENDIF}
-  EVScrollRectCodes: array[0..5] of Byte = (
-    $55,          // PUSH EBP
-    $8B, $EC,     // MOV EBP,ESP
-    $83, $C4, $FF // ADD ESP,-xx
-  );
 
+  sAllowableCodes: array[0..3] of T5Bytes = (
+    (
+      $53,           // PUSH EBX
+      $51,           // PUSH ECX
+      $89, $14, $24, // MOV DWORD PTR SS:[ESP],EDX
+      $00            // any byte
+    ),
+    (
+      $53,           // PUSH EBX
+      $56,           // PUSH ESI
+      $8B, $F2,      // MOV ESI,EDX
+      $8B, $D8       // MOV EBX,EAX
+    ),
+    (
+      $55,           // PUSH EBP
+      $8B, $EC,      // MOV EBP,ESP
+      $83, $C4, $FF  // ADD ESP,-xx
+    ),
+    (
+      $55,           // PUSH EBP
+      $8B, $EC,      // MOV EBP,ESP
+      $51, $B9, $0E  // any
+    )
+    );
+
+// Selecting a suitable array of machine codes for the function
+function check_func_codes(func: pointer): T5Bytes;
+
+  function is_valid(const val: T5Bytes): boolean;
+  begin
+    var p: PByte := func;
+    for var i: integer := 0 to 4 do
+    begin
+      if P^ and val[i] <> P^ then Exit(False);
+      inc(p);
+    end;
+    Result := True;
+  end;
+
+begin
+  fillchar(result[0], sizeof(result), 0);
+  for var i: integer := Low(sAllowableCodes) to High(sAllowableCodes) do
+    if is_valid( sAllowableCodes[i] )
+      then exit(sAllowableCodes[i]);
+end;
+
+var
+  EVFillRectCodes: T5Bytes;
+  EVScrollRectCodes: T5Bytes;
+
+const
   CoreIdeModuleName =
     {$IFDEF VER230}'coreide160.bpl'{$ENDIF} // XE2
     {$IFDEF VER240}'coreide170.bpl'{$ENDIF} // XE3
@@ -110,10 +148,12 @@ const
     {$IFDEF VER330}'coreide260.bpl'{$ENDIF} // 10.3 Rio
     {$IFDEF VER340}'coreide270.bpl'{$ENDIF} // 10.4 Sydney
     {$IFDEF VER350}'coreide280.bpl'{$ENDIF} // 11 Alexandria
+    {$IFDEF VER360}'coreide290.bpl'{$ENDIF} // 12 Athens
+    {$IFDEF VER370}'coreide370.bpl'{$ENDIF} // 13 Florence
     ;
 
   HighlightRegKey =
-    {$IFDEF VER230}'\Software\Embarcadero\BDS\9.0\Editor\Highlight\'{$ENDIF}  // XE2
+    {$IFDEF VER230}'\Software\Embarcadero\BDS\9.0\Editor\Highlight\' {$ENDIF} // XE2
     {$IFDEF VER240}'\Software\Embarcadero\BDS\10.0\Editor\Highlight\'{$ENDIF} // XE3
     {$IFDEF VER250}'\Software\Embarcadero\BDS\11.0\Editor\Highlight\'{$ENDIF} // XE4
     {$IFDEF VER260}'\Software\Embarcadero\BDS\12.0\Editor\Highlight\'{$ENDIF} // XE5
@@ -126,6 +166,8 @@ const
     {$IFDEF VER330}'\Software\Embarcadero\BDS\20.0\Editor\Highlight\'{$ENDIF} // 10.3 Rio
     {$IFDEF VER340}'\Software\Embarcadero\BDS\21.0\Editor\Highlight\'{$ENDIF} // 10.4 Sydney
     {$IFDEF VER350}'\Software\Embarcadero\BDS\22.0\Editor\Highlight\'{$ENDIF} // 11 Alexandria
+    {$IFDEF VER360}'\Software\Embarcadero\BDS\23.0\Editor\Highlight\'{$ENDIF} // 12 Athens
+    {$IFDEF VER370}'\Software\Embarcadero\BDS\37.0\Editor\Highlight\'{$ENDIF} // 13 Florence
     ;
   HighlightRegName = 'Background Color New';
 
@@ -265,7 +307,7 @@ function Hook: Boolean;
     i: Integer;
   begin
     if P = nil then Exit(False);
-    for i := Low(Codes) to High(Codes) do
+    for i := 0 to 4 do
     begin
       if P^ and Codes[i] <> P^ then
         Exit(False);
@@ -296,9 +338,19 @@ begin
   hModule := GetModuleHandle(CoreIdeModuleName);
   if hModule = 0 then Exit;
 
-  TCustomEditControl_EVFillRect := GetProcAddress(hModule, sEVFillRect);
+  TCustomEditControl_EVFillRect := nil;
+  for var vEVFillRect: string in  sEVFillRectList do
+  begin
+    TCustomEditControl_EVFillRect := GetProcAddress(hModule, PWideChar(WideString(vEVFillRect)));
+    if TCustomEditControl_EVFillRect <> nil then Break;
+  end;
+
+
   TCustomEditControl_EVScrollRect := GetProcAddress(hModule, sEVScrollRect);
   EditControlList := GetProcAddress(hModule, sEditControlList);
+
+  EVFillRectCodes   := check_func_codes( TCustomEditControl_EVFillRect );
+  EVScrollRectCodes := check_func_codes( TCustomEditControl_EVScrollRect );
 
   if not IsValidCodes(TCustomEditControl_EVFillRect, EVFillRectCodes) or
      not IsValidCodes(TCustomEditControl_EVScrollRect, EVScrollRectCodes) or
@@ -320,7 +372,6 @@ begin
     if prop <> nil then
       LeftGutterProp := TRttiInstanceProperty(prop).PropInfo;
   end;
-
   RefreshEditors;
 
   Result := True;
